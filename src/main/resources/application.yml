@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: spring-cloud-streams
+  cloud:
+    function:
+      definition: pageEventConsumer;pageEventSupplier;KStreamFunction
+    stream:
+      poller:
+        fixed-delay:
+          millis: 100
+      bindings:
+        pageEventConsumer-in-0:
+          destination: T1  # Topic Kafka pour le Consumer
+        pageEventSupplier-out-0:
+          destination: T2  # Topic Kafka pour le Producer
+        pageEventFunction-in-0:
+          destination: T1  # Topic Kafka pour le Consumer
+        pageEventFunction-out-0:
+          destination: T3  # Topic Kafka pour le Producer
+        KStreamFunction-in-0:
+          destination: T2  # Topic Kafka pour le Consumer
+        KStreamFunction-out-0:
+          destination: T4  # Topic Kafka pour le Producer
+      kafka:
+        streams:
+          binder:
+            configuration:
+              commit:
+                interval:
+                  ms: 1000
+        binder:
+          brokers: localhost:9092 # Adresse du broker Kafka
